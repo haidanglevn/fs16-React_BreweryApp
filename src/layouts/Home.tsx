@@ -10,11 +10,35 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
+import SelectForm, { SelectOptions } from "../components/SelectForm";
 
 // API sample
 // GET https://api.openbrewerydb.org/v1/breweries?per_page=3 : List of breweries
 // GET https://api.openbrewerydb.org/v1/breweries?by_city=san_diego&per_page=3: query by city
 // GET https://api.openbrewerydb.org/v1/breweries?by_state=california&per_page=3: query by state
+
+const topCitiesByPopulation = [
+  "New York City",
+  "Los Angeles",
+  "Chicago",
+  "Houston",
+  "Phoenix",
+  "Philadelphia",
+  "San Antonio",
+  "San Diego",
+  "Dallas",
+  "San Jose",
+  "Austin",
+  "Jacksonville",
+  "Fort Worth",
+  "Columbus",
+  "Charlotte",
+  "San Francisco",
+  "Indianapolis",
+  "Seattle",
+  "Denver",
+  "Washington",
+];
 
 const topStatesByPopulation = [
   "California",
@@ -32,6 +56,7 @@ const topStatesByPopulation = [
 export default function Home() {
   const [data, setData] = useState<Brewery[]>([]);
   const [search, setSearch] = useState<string>("");
+  const [cityFilter, setCityFilter] = useState<string>("");
   const [stateFilter, setStateFilter] = useState<string>("");
   const [itemPerPage, setItemPerPage] = useState<string>("10");
 
@@ -39,11 +64,14 @@ export default function Home() {
     setSearch(event.target.value);
   };
 
-  const handleStateFilterChange = (event: SelectChangeEvent<string>) => {
+  const handleCityFilter = (event: SelectChangeEvent<string>) => {
+    setCityFilter(event.target.value);
+  };
+  const handleStateFilter = (event: SelectChangeEvent<string>) => {
     setStateFilter(event.target.value);
   };
 
-  const handlePerPageChange = (event: SelectChangeEvent<string>) => {
+  const handleItemPerPage = (event: SelectChangeEvent<string>) => {
     setItemPerPage(event.target.value);
   };
 
@@ -51,11 +79,24 @@ export default function Home() {
     brewery.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const transformArrayToOption = (array: string[]) => {
+    let result: SelectOptions[] = array.map((option: string) => ({
+      value: option.toLowerCase().replace(/ /g, "_"),
+      displayLabel: option,
+    }));
+    return result;
+  };
+
   useEffect(() => {
     let url = `https://api.openbrewerydb.org/v1/breweries?per_page=${itemPerPage}`;
     if (stateFilter !== "") {
       url += `&by_state=${stateFilter}`;
       console.log("Filtering by state");
+      setCityFilter(""); // Make sure that user can choose either city or state, not both
+    } else if (cityFilter !== "") {
+      url += `&by_city=${cityFilter}`;
+      console.log("Filtering by city");
+      setStateFilter(""); // Make sure that user can choose either city or state, not both
     }
     axios
       .get(url)
@@ -64,7 +105,8 @@ export default function Home() {
         console.log(result.data);
       })
       .catch((err) => console.log(err));
-  }, [stateFilter, itemPerPage]);
+  }, [cityFilter, stateFilter, itemPerPage]);
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
@@ -72,41 +114,24 @@ export default function Home() {
       <h1>Brewery App</h1>
       <SearchBar onChange={onSearchTermChange} />
       <div className="filter wrapper">
-        <FormControl variant="filled" style={{ minWidth: 200 }}>
-          <InputLabel id="filter-select-label">Filter By State</InputLabel>
-          <Select
-            labelId="filter-select-label"
-            id="filter-select"
-            value={stateFilter}
-            onChange={handleStateFilterChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {topStatesByPopulation.map((option) => {
-              return (
-                <MenuItem value={option.toLowerCase().replace(/ /g, "_")}>
-                  {option}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-        <FormControl variant="filled" style={{ minWidth: 200 }}>
-          <InputLabel id="filter-select-label">Result per page</InputLabel>
-          <Select
-            labelId="filter-select-label"
-            id="filter-select"
-            value={itemPerPage}
-            onChange={handlePerPageChange}
-          >
-            <MenuItem defaultChecked value={"10"}>
-              10
-            </MenuItem>
-            ;<MenuItem value={"20"}>20</MenuItem>;
-            <MenuItem value={"50"}>50</MenuItem>;
-          </Select>
-        </FormControl>
+        <SelectForm
+          inputLabel="Filter By City"
+          value={cityFilter}
+          onChange={handleCityFilter}
+          options={transformArrayToOption(topCitiesByPopulation)}
+        />
+        <SelectForm
+          inputLabel="Filter By State"
+          value={stateFilter}
+          onChange={handleStateFilter}
+          options={transformArrayToOption(topStatesByPopulation)}
+        />
+        <SelectForm
+          inputLabel="Result per page"
+          value={itemPerPage}
+          onChange={handleItemPerPage}
+          options={transformArrayToOption(["10", "20", "50"])}
+        />
       </div>
       <div
         style={{
