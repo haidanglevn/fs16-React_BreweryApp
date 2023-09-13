@@ -3,13 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Brewery } from "../types/Types";
 import { BreweryCard } from "../components/BreweryCard";
 import SearchBar from "../components/Searchbar";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import SelectForm, { SelectOptions } from "../components/SelectForm";
 
 // API sample
@@ -18,7 +12,7 @@ import SelectForm, { SelectOptions } from "../components/SelectForm";
 // GET https://api.openbrewerydb.org/v1/breweries?by_state=california&per_page=3: query by state
 
 const topCitiesByPopulation = [
-  "New York City",
+  "New York",
   "Los Angeles",
   "Chicago",
   "Houston",
@@ -51,6 +45,7 @@ const topStatesByPopulation = [
   "Georgia",
   "North Carolina",
   "Michigan",
+  "Washington",
 ];
 
 export default function Home() {
@@ -66,9 +61,11 @@ export default function Home() {
 
   const handleCityFilter = (event: SelectChangeEvent<string>) => {
     setCityFilter(event.target.value);
+    setStateFilter(""); // Make sure that user can choose either city or state, not both
   };
   const handleStateFilter = (event: SelectChangeEvent<string>) => {
     setStateFilter(event.target.value);
+    setCityFilter(""); // Make sure that user can choose either city or state, not both
   };
 
   const handleItemPerPage = (event: SelectChangeEvent<string>) => {
@@ -88,16 +85,15 @@ export default function Home() {
   };
 
   useEffect(() => {
-    let url = `https://api.openbrewerydb.org/v1/breweries?per_page=${itemPerPage}`;
+    const urlBase = `https://api.openbrewerydb.org/v1/breweries?per_page=${itemPerPage}`;
+    let url = urlBase;
     if (stateFilter !== "") {
-      url += `&by_state=${stateFilter}`;
-      console.log("Filtering by state");
-      setCityFilter(""); // Make sure that user can choose either city or state, not both
-    } else if (cityFilter !== "") {
-      url += `&by_city=${cityFilter}`;
-      console.log("Filtering by city");
-      setStateFilter(""); // Make sure that user can choose either city or state, not both
+      url = urlBase + `&by_state=${stateFilter}`;
     }
+    if (cityFilter !== "") {
+      url = urlBase + `&by_city=${cityFilter}`;
+    }
+
     axios
       .get(url)
       .then((result) => {
