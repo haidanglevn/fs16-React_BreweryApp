@@ -34,7 +34,7 @@ export interface Brewery {
   id: string;
   name: string;
   brewery_type: BreweryType;
-  address1: string;
+  address1: string | null;
   address2: string | null;
   address3: string | null;
   city: string;
@@ -45,6 +45,6 @@ export interface Brewery {
   latitude: string;
   phone: string;
   website_url: string;
-  state: string;
+  state: string | null;
   street: string;
 }
