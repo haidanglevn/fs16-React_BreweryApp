@@ -3,8 +3,15 @@ import React, { useEffect, useState } from "react";
 import { Brewery } from "../types/Types";
 import { BreweryCard } from "../components/BreweryCard";
 import SearchBar from "../components/Searchbar";
-import { SelectChangeEvent, Stack, Typography } from "@mui/material";
+import {
+  CircularProgress,
+  Pagination,
+  SelectChangeEvent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import SelectForm, { SelectOptions } from "../components/SelectForm";
+import Loading from "../components/Loading";
 
 // API sample
 // GET https://api.openbrewerydb.org/v1/breweries?per_page=3 : List of breweries
@@ -53,13 +60,22 @@ export default function Home() {
   const [search, setSearch] = useState<string>("");
   const [debounceSearch, setDebounceSearch] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [cityFilter, setCityFilter] = useState<string>("");
   const [stateFilter, setStateFilter] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const [itemPerPage, setItemPerPage] = useState<string>("10");
 
   const onSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+  };
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
   };
 
   const handleCityFilter = (event: SelectChangeEvent<string>) => {
@@ -78,7 +94,6 @@ export default function Home() {
   const filteredBreweries = data.filter((brewery) =>
     brewery.name.toLowerCase().includes(debounceSearch.toLowerCase())
   );
-  console.log(filteredBreweries);
 
   const transformArrayToOption = (array: string[]) => {
     let result: SelectOptions[] = array.map((option: string) => ({
@@ -89,7 +104,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const urlBase = `https://api.openbrewerydb.org/v1/breweries?per_page=${itemPerPage}`;
+    setIsLoading(true);
+    const urlBase = `https://api.openbrewerydb.org/v1/breweries?page=${page}&per_page=${itemPerPage}`;
     let url = urlBase;
     if (stateFilter !== "") {
       url = urlBase + `&by_state=${stateFilter}`;
@@ -98,14 +114,20 @@ export default function Home() {
       url = urlBase + `&by_city=${cityFilter}`;
     }
 
-    axios
-      .get(url)
-      .then((result) => {
-        setData(result.data);
-        console.log(result.data);
+    const fetchData = axios.get(url);
+    const delay = new Promise((resolve) => setTimeout(resolve, 1500)); // 1,5 second delay
+
+    Promise.all([fetchData, delay])
+      .then((results) => {
+        const apiResult = results[0];
+        setData(apiResult.data);
+        setIsLoading(false);
       })
-      .catch((err) => setErrorMessage(`Failed to fetch data. ${err.message}`));
-  }, [cityFilter, stateFilter, itemPerPage]);
+      .catch((err) => {
+        setErrorMessage(`Failed to fetch data. ${err.message}`);
+        setIsLoading(false);
+      });
+  }, [cityFilter, stateFilter, itemPerPage, page]);
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
@@ -118,12 +140,7 @@ export default function Home() {
   }, [search]);
 
   return (
-    <Stack
-      // style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      direction={"column"}
-      alignItems={"center"}
-      justifyContent={"center"}
-    >
+    <Stack direction={"column"} alignItems={"center"} justifyContent={"center"}>
       <h1>Brewery App</h1>
       <SearchBar onChange={onSearchTermChange} />
       <Stack
@@ -152,7 +169,8 @@ export default function Home() {
         />
       </Stack>
       {errorMessage && <Typography variant="body1">{errorMessage}</Typography>}
-      {filteredBreweries.length === 0 && !errorMessage ? (
+      {isLoading && <Loading />}
+      {filteredBreweries.length === 0 && !errorMessage && !isLoading ? (
         <Typography variant="body1">
           No breweries found. Try adjusting your filters.
         </Typography>
@@ -163,12 +181,22 @@ export default function Home() {
           justifyContent={"center"}
           gap={"30px"}
           padding={"30px 0"}
+          sx={{ filter: isLoading ? "blur(10px)" : "none" }}
         >
-          {filteredBreweries.map((item) => {
-            return <BreweryCard {...item} />;
+          {filteredBreweries.map((item, index) => {
+            return <BreweryCard {...item} key={index} />;
           })}
         </Stack>
       )}
+      <Pagination
+        count={10}
+        color="primary"
+        page={page || 1}
+        onChange={handlePageChange}
+        sx={{ paddingBottom: "30px" }}
+        showFirstButton
+        showLastButton
+      />
     </Stack>
   );
 }

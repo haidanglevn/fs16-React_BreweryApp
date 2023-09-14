@@ -25,18 +25,25 @@ Fetch, display, and search for brewery companies from the given API endpoint, us
 
 ## Checklist
 
-Layout used (Material UI)
+Layout (Material UI)
 
 - [x] Stack
 - [x] Typography, TextField
 - [x] Card: CardContent, CardMedia, CardActions
 - [x] FormControl: Select
+- [ ] Theme and final touch of styling
 
-Functionalities
+Features
 
 - [x] Filter: by city and state
 - [x] Search function by name, with 500ms debounce
 - [x] Error handling: fetch no data (404)?
-- [ ] Pagination & item per page
+- [x] Loading for 1s every fetch: with an animated loading component
+- [x] Pagination & item per page
 - [ ] Google login and prefill form
 - [ ] Custom Hook to fetch data?
+- [ ] SinglePage for each brewery
+
+Random utilities
+
+- [x] Clean the website url: remove "http://" or "https://"

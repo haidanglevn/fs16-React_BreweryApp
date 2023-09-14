@@ -9,6 +9,11 @@ import {
 import { Brewery } from "../types/Types";
 
 export const BreweryCard = (item: Brewery) => {
+  // function to clean the website url, remove the "http://" or "https://"
+  const cleanURL = (url: string) => {
+    return url.replace(/^https?:\/\//, "");
+  };
+
   return (
     <Card
       sx={{
@@ -20,7 +25,9 @@ export const BreweryCard = (item: Brewery) => {
         component="img"
         alt="brewery image"
         height="140"
-        image="https://source.unsplash.com/500x400/?beer-drinking"
+        image={`https://source.unsplash.com/500x400/?brewery-${Math.floor(
+          Math.random() * 15
+        )}`}
       />
       <div
         className="card_content_wrapper"
@@ -40,7 +47,7 @@ export const BreweryCard = (item: Brewery) => {
             {`🏙️ ${item.city}, ${item.state}`}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {item.website_url ? `🌐 ${item.website_url}` : ""}
+            {item.website_url ? `🌐 ${cleanURL(item.website_url)}` : ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {item.phone ? `📱 +1 ${item.phone}` : ""}
