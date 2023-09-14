@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Brewery } from "../types/Types";
 import { BreweryCard } from "../components/BreweryCard";
 import SearchBar from "../components/Searchbar";
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent, Stack, Typography } from "@mui/material";
 import SelectForm, { SelectOptions } from "../components/SelectForm";
 
 // API sample
@@ -51,6 +51,9 @@ const topStatesByPopulation = [
 export default function Home() {
   const [data, setData] = useState<Brewery[]>([]);
   const [search, setSearch] = useState<string>("");
+  const [debounceSearch, setDebounceSearch] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const [cityFilter, setCityFilter] = useState<string>("");
   const [stateFilter, setStateFilter] = useState<string>("");
   const [itemPerPage, setItemPerPage] = useState<string>("10");
@@ -73,8 +76,9 @@ export default function Home() {
   };
 
   const filteredBreweries = data.filter((brewery) =>
-    brewery.name.toLowerCase().includes(search.toLowerCase())
+    brewery.name.toLowerCase().includes(debounceSearch.toLowerCase())
   );
+  console.log(filteredBreweries);
 
   const transformArrayToOption = (array: string[]) => {
     let result: SelectOptions[] = array.map((option: string) => ({
@@ -100,16 +104,34 @@ export default function Home() {
         setData(result.data);
         console.log(result.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setErrorMessage(`Failed to fetch data. ${err.message}`));
   }, [cityFilter, stateFilter, itemPerPage]);
 
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      setDebounceSearch(search);
+    }, 500);
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  }, [search]);
+
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    <Stack
+      // style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      direction={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
     >
       <h1>Brewery App</h1>
       <SearchBar onChange={onSearchTermChange} />
-      <div className="filter wrapper">
+      <Stack
+        className="filter wrapper"
+        direction={"row"}
+        gap={"10px"}
+        paddingBottom={"20px"}
+      >
         <SelectForm
           inputLabel="Filter By City"
           value={cityFilter}
@@ -128,21 +150,25 @@ export default function Home() {
           onChange={handleItemPerPage}
           options={transformArrayToOption(["10", "20", "50"])}
         />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "30px",
-          alignItems: "start",
-          justifyContent: "center",
-          padding: "30px 0",
-        }}
-      >
-        {filteredBreweries.map((item) => {
-          return <BreweryCard {...item} />;
-        })}
-      </div>
-    </div>
+      </Stack>
+      {errorMessage && <Typography variant="body1">{errorMessage}</Typography>}
+      {filteredBreweries.length === 0 && !errorMessage ? (
+        <Typography variant="body1">
+          No breweries found. Try adjusting your filters.
+        </Typography>
+      ) : (
+        <Stack
+          direction={"row"}
+          flexWrap={"wrap"}
+          justifyContent={"center"}
+          gap={"30px"}
+          padding={"30px 0"}
+        >
+          {filteredBreweries.map((item) => {
+            return <BreweryCard {...item} />;
+          })}
+        </Stack>
+      )}
+    </Stack>
   );
 }

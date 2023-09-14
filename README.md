@@ -22,3 +22,21 @@ Fetch, display, and search for brewery companies from the given API endpoint, us
 8. Create a contact form so that user can send question along with their contact information.
 
 9. Use Google-login option to pre-fill the contact form for user (no need to send form data anywhere, just need to fill the form. Submit button can just alert user of successful submission).
+
+## Checklist
+
+Layout used (Material UI)
+
+- [x] Stack
+- [x] Typography, TextField
+- [x] Card: CardContent, CardMedia, CardActions
+- [x] FormControl: Select
+
+Functionalities
+
+- [x] Filter: by city and state
+- [x] Search function by name, with 500ms debounce
+- [x] Error handling: fetch no data (404)?
+- [ ] Pagination & item per page
+- [ ] Google login and prefill form
+- [ ] Custom Hook to fetch data?
