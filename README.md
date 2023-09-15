@@ -48,3 +48,7 @@ Features
 Random utilities
 
 - [x] Clean the website url: remove "http://" or "https://"
+
+## Live page:
+
+Deployed with Netlify [https://haidanglevn-react-brewery.netlify.app/](https://haidanglevn-react-brewery.netlify.app/)
