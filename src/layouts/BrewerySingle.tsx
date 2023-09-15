@@ -1,7 +1,5 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Brewery } from "../types/Types";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 export default function BrewerySingle() {
   let { state } = useLocation();

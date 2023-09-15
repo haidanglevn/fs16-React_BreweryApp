@@ -18,7 +18,7 @@ export default function Footer() {
       alignItems="center"
       justifyContent="center"
     >
-      <Typography variant="body2">Created by Dang Le 2023</Typography>
+      <Typography variant="body2">© Created by Dang Le 2023</Typography>
     </Box>
   );
 }

@@ -3,13 +3,11 @@ import {
   Toolbar,
   Typography,
   Avatar,
-  Button,
-  Box,
   Menu,
   MenuItem,
 } from "@mui/material";
-import SportsBarIcon from "@mui/icons-material/SportsBar";
 import { useState } from "react";
+import BeerLogo from "../assets/beer.png";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -26,15 +24,19 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static" style={{ marginBottom: "20px" }}>
+    <AppBar position="static" style={{ marginBottom: "20px", height: "60px" }}>
       <Toolbar>
-        <SportsBarIcon />
+        <img
+          src={BeerLogo}
+          style={{ height: "40px", marginRight: "10px" }}
+          alt="Beer logo"
+        />
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Brewery App
         </Typography>
         <Avatar
           alt="User Avatar"
-          src="/path-to-your-avatar-image.jpg"
+          src="https://source.unsplash.com/500x400/?face"
           onClick={handleMenuOpen}
         />
         <Menu
