@@ -40,6 +40,7 @@ Features
 - [x] Error handling: fetch no data (404)?
 - [x] Loading for 1s every fetch: with an animated loading component
 - [x] Pagination & item per page
+- [ ] React router
 - [ ] Google login and prefill form
 - [ ] Custom Hook to fetch data?
 - [ ] SinglePage for each brewery

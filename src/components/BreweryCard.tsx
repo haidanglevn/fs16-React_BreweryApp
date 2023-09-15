@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Brewery } from "../types/Types";
+import { Link } from "react-router-dom";
 
 export const BreweryCard = (item: Brewery) => {
   // function to clean the website url, remove the "http://" or "https://"
@@ -55,7 +56,13 @@ export const BreweryCard = (item: Brewery) => {
         </CardContent>
         <CardActions sx={{ margin: "0 auto" }}>
           <Button size="small" variant="contained" sx={{ margin: "0 5px" }}>
-            Learn more
+            <Link
+              to={`brewery/${item.id}`}
+              state={{ data: item as Brewery }}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              Learn more
+            </Link>
           </Button>
           <Button
             size="small"

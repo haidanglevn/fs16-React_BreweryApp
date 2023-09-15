@@ -1,4 +1,4 @@
-import { Stack, CircularProgress, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import beerMug from "../assets/clinking-beer-mugs.gif";
 
 export default function Loading() {
@@ -7,9 +7,9 @@ export default function Loading() {
       padding={"0 50px"}
       justifyContent={"center"}
       alignItems={"center"}
-      position={"absolute"}
+      position={"fixed"}
       zIndex={10}
-      top={"20vh"}
+      top={"30vh"}
     >
       <img src={beerMug} alt="" style={{ height: "300px" }} />
       <Typography

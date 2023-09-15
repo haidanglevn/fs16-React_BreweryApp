@@ -29,11 +29,12 @@ function SelectForm(props: SelectFormProps) {
     <FormControl variant="filled" style={{ minWidth: 200 }}>
       <InputLabel>{props.inputLabel}</InputLabel>
       <Select value={props.value} onChange={props.onChange}>
-        {props.options.map((option) => {
+        {props.options.map((option, index) => {
           return (
             <MenuItem
               defaultChecked={option.defaultChecked}
               value={option.value.toLowerCase().replace(/ /g, "_")}
+              key={`option-${index}`}
             >
               {option.displayLabel}
             </MenuItem>

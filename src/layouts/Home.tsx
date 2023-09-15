@@ -4,7 +4,6 @@ import { Brewery } from "../types/Types";
 import { BreweryCard } from "../components/BreweryCard";
 import SearchBar from "../components/Searchbar";
 import {
-  CircularProgress,
   Pagination,
   SelectChangeEvent,
   Stack,
@@ -14,6 +13,7 @@ import SelectForm, { SelectOptions } from "../components/SelectForm";
 import Loading from "../components/Loading";
 
 // API sample
+// GET https://api.openbrewerydb.org/v1/breweries/{obdb-id}
 // GET https://api.openbrewerydb.org/v1/breweries?per_page=3 : List of breweries
 // GET https://api.openbrewerydb.org/v1/breweries?by_city=san_diego&per_page=3: query by city
 // GET https://api.openbrewerydb.org/v1/breweries?by_state=california&per_page=3: query by state
@@ -140,14 +140,19 @@ export default function Home() {
   }, [search]);
 
   return (
-    <Stack direction={"column"} alignItems={"center"} justifyContent={"center"}>
-      <h1>Brewery App</h1>
+    <Stack
+      direction={"column"}
+      alignItems={"center"}
+      justifyContent={"flex-start"}
+    >
       <SearchBar onChange={onSearchTermChange} />
       <Stack
         className="filter wrapper"
         direction={"row"}
         gap={"10px"}
         paddingBottom={"20px"}
+        justifyContent={"center"}
+        flexWrap={"wrap"}
       >
         <SelectForm
           inputLabel="Filter By City"
@@ -180,7 +185,7 @@ export default function Home() {
           flexWrap={"wrap"}
           justifyContent={"center"}
           gap={"30px"}
-          padding={"30px 0"}
+          padding={"10px 0"}
           sx={{ filter: isLoading ? "blur(10px)" : "none" }}
         >
           {filteredBreweries.map((item, index) => {
