@@ -1,18 +1,24 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Typography, useTheme } from "@mui/material";
 
 export default function Footer() {
+  const theme = useTheme();
+  const mode = theme.palette.mode;
+  console.log(mode);
+
   return (
     <Box
       component="footer"
       height="30px"
       position="fixed"
-      color="white"
+      color={theme.palette.common.white}
       bottom={0}
       width="100%"
       sx={{
-        backgroundColor: "black",
-        borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+        backgroundColor:
+          mode === "dark"
+            ? theme.palette.background.paper
+            : theme.palette.primary.main,
+        borderTop: `1px solid ${theme.palette.divider}`,
       }}
       display="flex"
       alignItems="center"

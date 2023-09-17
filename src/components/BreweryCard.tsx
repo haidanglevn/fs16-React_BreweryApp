@@ -55,11 +55,16 @@ export const BreweryCard = (item: Brewery) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ margin: "0 auto" }}>
-          <Button size="small" variant="contained" sx={{ margin: "0 5px" }}>
+          <Button
+            size="small"
+            variant="contained"
+            sx={{ margin: "0 5px" }}
+            color="primary"
+          >
             <Link
               to={`brewery/${item.id}`}
               state={{ data: item as Brewery }}
-              style={{ textDecoration: "none", color: "white" }}
+              style={{ textDecoration: "none", color: "inherit" }}
             >
               Learn more
             </Link>
@@ -71,6 +76,7 @@ export const BreweryCard = (item: Brewery) => {
             href={item.website_url}
             target="_blank"
             rel="noopener noreferrer"
+            color="primary"
           >
             Visit website
           </Button>

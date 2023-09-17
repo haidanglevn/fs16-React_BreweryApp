@@ -8,9 +8,14 @@ import {
   SelectChangeEvent,
   Stack,
   Typography,
+  IconButton,
+  Box,
+  useTheme,
 } from "@mui/material";
 import SelectForm, { SelectOptions } from "../components/SelectForm";
 import Loading from "../components/Loading";
+import RestoreIcon from "@mui/icons-material/Restore";
+import NotFound from "../components/NotFound";
 
 // API sample
 // GET https://api.openbrewerydb.org/v1/breweries/{obdb-id}
@@ -67,6 +72,8 @@ export default function Home() {
   const [page, setPage] = useState<number>(1);
   const [itemPerPage, setItemPerPage] = useState<string>("10");
 
+  const theme = useTheme();
+
   const onSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
@@ -87,6 +94,12 @@ export default function Home() {
     setCityFilter(""); // Make sure that user can choose either city or state, not both
   };
 
+  const resetFilter = () => {
+    setStateFilter("");
+    setCityFilter("");
+    setItemPerPage("10");
+    console.log("reset filter....");
+  };
   const handleItemPerPage = (event: SelectChangeEvent<string>) => {
     setItemPerPage(event.target.value);
   };
@@ -144,8 +157,12 @@ export default function Home() {
       direction={"column"}
       alignItems={"center"}
       justifyContent={"flex-start"}
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        paddingTop: 5,
+        minHeight: "calc(100vh - 30px - 60px)",
+      }}
     >
-      <SearchBar onChange={onSearchTermChange} />
       <Stack
         className="filter wrapper"
         direction={"row"}
@@ -154,6 +171,7 @@ export default function Home() {
         justifyContent={"center"}
         flexWrap={"wrap"}
       >
+        <SearchBar onChange={onSearchTermChange} />
         <SelectForm
           inputLabel="Filter By City"
           value={cityFilter}
@@ -172,13 +190,14 @@ export default function Home() {
           onChange={handleItemPerPage}
           options={transformArrayToOption(["10", "20", "50"])}
         />
+        <IconButton color="primary" onClick={resetFilter}>
+          <RestoreIcon />
+        </IconButton>
       </Stack>
       {errorMessage && <Typography variant="body1">{errorMessage}</Typography>}
       {isLoading && <Loading />}
       {filteredBreweries.length === 0 && !errorMessage && !isLoading ? (
-        <Typography variant="body1">
-          No breweries found. Try adjusting your filters.
-        </Typography>
+        <NotFound />
       ) : (
         <Stack
           direction={"row"}
