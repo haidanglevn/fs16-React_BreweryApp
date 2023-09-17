@@ -10,6 +10,7 @@ export default function NotFound() {
       <img
         src={mode === "light" ? NoBeerWhite : NoBeerYellow}
         style={{ height: 300 }}
+        alt="not-found"
       />
       <Typography
         variant="body1"

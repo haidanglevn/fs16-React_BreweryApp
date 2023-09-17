@@ -1,27 +1,22 @@
 # Breweries App
 
-Fetch, display, and search for brewery companies from the given API endpoint, using React and TypeScript
+## Introduction
 
-## Requirements
+A front-end project using React Typescript and Material UI for Integrify Academy. This project helps student practice basic concepts and features of React, including:
 
-1. Check the documentation at [https://www.openbrewerydb.org/documentation](https://www.openbrewerydb.org/documentation) Fetch and display information of all the companies.
+- React lifecycle
+- Using common React Hooks: useState, useEffect
+- Using react-router-dom to navigate SPA
+- Fetching data from API and handling error
+- Using MaterialUI and its Theme system.
 
-2. Have proper display and routing that user can switch to/back from specific company's detailed page
+## Screenshots
 
-3. Create search component to enable user to input text and search for companies by name.
+Coming soon...
 
-4. Use MaterialUI to make your design more appealing and responsive
+## Live page:
 
-5. Deploy your application and rewrite README file
-
-## Optional
-
-6. Implement performance optimization where applicable
-7. Use the queries listed in the documentation to sort and limit the returned data and build pagination feature.
-
-8. Create a contact form so that user can send question along with their contact information.
-
-9. Use Google-login option to pre-fill the contact form for user (no need to send form data anywhere, just need to fill the form. Submit button can just alert user of successful submission).
+Deployed with Netlify [https://haidanglevn-react-brewery.netlify.app/](https://haidanglevn-react-brewery.netlify.app/)
 
 ## Checklist
 
@@ -40,11 +35,6 @@ Features
 - [x] Search function by name, with 500ms debounce
 - [x] Error handling: fetch no data (404)?
 - [x] Loading for 1s every fetch: with an animated loading component
+- [x] SinglePage for each brewery
 - [x] Pagination & item per page
 - [ ] Google login and prefill form
-- [ ] Custom Hook to fetch data?
-- [ ] SinglePage for each brewery
-
-## Live page:
-
-Deployed with Netlify [https://haidanglevn-react-brewery.netlify.app/](https://haidanglevn-react-brewery.netlify.app/)

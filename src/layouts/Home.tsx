@@ -9,7 +9,6 @@ import {
   Stack,
   Typography,
   IconButton,
-  Box,
   useTheme,
 } from "@mui/material";
 import SelectForm, { SelectOptions } from "../components/SelectForm";
@@ -98,8 +97,8 @@ export default function Home() {
     setStateFilter("");
     setCityFilter("");
     setItemPerPage("10");
-    console.log("reset filter....");
   };
+
   const handleItemPerPage = (event: SelectChangeEvent<string>) => {
     setItemPerPage(event.target.value);
   };
@@ -134,6 +133,7 @@ export default function Home() {
       .then((results) => {
         const apiResult = results[0];
         setData(apiResult.data);
+        console.log(apiResult.data);
         setIsLoading(false);
       })
       .catch((err) => {

@@ -9,12 +9,12 @@ import {
 import { Brewery } from "../types/Types";
 import { Link } from "react-router-dom";
 
-export const BreweryCard = (item: Brewery) => {
-  // function to clean the website url, remove the "http://" or "https://"
-  const cleanURL = (url: string) => {
-    return url.replace(/^https?:\/\//, "");
-  };
+// function to clean the website url, remove the "http://" or "https://"
+export const cleanURL = (url: string) => {
+  return url.replace(/^https?:\/\//, "");
+};
 
+export const BreweryCard = (item: Brewery) => {
   return (
     <Card
       sx={{
@@ -27,7 +27,7 @@ export const BreweryCard = (item: Brewery) => {
         alt="brewery image"
         height="140"
         image={`https://source.unsplash.com/500x400/?brewery-${Math.floor(
-          Math.random() * 15
+          Math.random() * 30
         )}`}
       />
       <div
