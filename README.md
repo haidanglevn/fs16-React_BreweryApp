@@ -12,7 +12,9 @@ A front-end project using React Typescript and Material UI for Integrify Academy
 
 ## Screenshots
 
-Coming soon...
+![image](https://github.com/haidanglevn/fs16-React_BreweryApp/assets/24937536/a31c85bb-df9f-4324-b9a5-ec9297931e26)
+![image](https://github.com/haidanglevn/fs16-React_BreweryApp/assets/24937536/d3d38523-4ebe-49d1-9a1a-7bad24a09508)
+
 
 ## Live page:
 
